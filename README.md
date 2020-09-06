@@ -8,6 +8,7 @@ Just copy folder to your localhost www and access Home page(index.php)
 copy folder to your localhost www.
 When you open index.php, choose csv file and enter username and password for you localhost.
 Upload button upload csv file and create database and table needed.
+> username for live site :eb2a_26636227 and password :asemasem
 
 ## Task 4
 * copy folder to your localhost www.
