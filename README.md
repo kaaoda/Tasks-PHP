@@ -18,5 +18,5 @@ Upload button upload csv file and create database and table needed.
 	* private const HOST
 	* private const NAME
 	* private const PASSWORD
-	> to proper values for your localhost.
+	**to proper values for your localhost**
 
