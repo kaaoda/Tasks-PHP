@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(isset($_SESSION['TIMEOUT']) && time() - $_SESSION['TIMEOUT'] > 900)://set timeout for session after 30 minute
+    session_unset();
+    session_destroy();
+endif;
 require_once("external_data.php");
 if($_SERVER['REQUEST_METHOD'] == "POST"):
     $flagSecure = true;
@@ -32,7 +36,7 @@ endif;
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <title>Welcome to TASK 4</title>
+    <title>Signup</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
     <link rel="stylesheet" href="css/style.css" />
@@ -42,6 +46,7 @@ endif;
     <body>
         <div class="container">
             <h1 class="head text-center">Signup</h1>
+            <a class="btn btn-warning btn-block" href="index.php">Home</a>
             <form class="signup-form" method="POST" action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <?php
                 if(!empty($errors)):
@@ -150,9 +155,8 @@ endif;
 
         <?php
         if(isset($flagSecure) && $flagSecure):
-            
             require_once("db_processes.php");
-            $db = new Database("tasks");
+            $db = new Database("eb2a_26636227_task4");
             $dataToBeStored = array(
                 "name"=>($nameInput->getValue()),
                 "email"=>$emailInput->getValue(),
@@ -160,9 +164,9 @@ endif;
                 "phone"=>$phoneInput->getValue(),
                 "addr"=>$addrInput->getValue());
             $msg = $db->insert($dataToBeStored);
-            
             if(stripos($msg,"Done") !== FALSE):
                 $_SESSION['name'] = $nameInput->getValue();
+                $_SESSION['TIMEOUT'] = time();
                 ?>
                 <div class="alert alert-info">
                 <?php
@@ -176,7 +180,7 @@ endif;
                 </div>
                 <script>
                     setTimeout(function(){
-                        window.location.href = "http://localhost:8080/tasks/task4/index.php";
+                        window.location.href = "index.php";
                     },3000);
                 </script>
                 <?php

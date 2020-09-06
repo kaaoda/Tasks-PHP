@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(isset($_SESSION['TIMEOUT']) && ((time() - $_SESSION['TIMEOUT']) > 900))://set timeout for session after 30 minute
+    session_unset();
+    session_destroy();
+endif;
 ?>
 <!DOCTYPE html>
 <html lang="en">

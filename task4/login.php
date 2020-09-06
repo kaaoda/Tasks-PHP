@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(isset($_SESSION['TIMEOUT']) && time() - $_SESSION['TIMEOUT'] > 900)://set timeout for session after 30 minute
+    session_unset();
+    session_destroy();
+endif;
 require_once("external_data.php");
 if($_SERVER['REQUEST_METHOD'] == "POST"):
     $flagSecure = true;
@@ -26,7 +30,7 @@ endif;
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <title>Welcome to TASK 4</title>
+    <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
     <link rel="stylesheet" href="css/style.css" />
@@ -36,6 +40,7 @@ endif;
     <body>
         <div class="container">
             <h1 class="head text-center">Login</h1>
+            <a class="btn btn-warning btn-block" href="index.php">Home</a>
             <form class="signup-form" method="POST" action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <?php
                 if(!empty($errors)):
@@ -109,43 +114,44 @@ endif;
             <?php
                 endif;
             
-        if(isset($flagSecure) && $flagSecure):
-            require_once("db_processes.php");
-            $db = new Database("tasks");                
-            $msg = $db->login($emailInput->getValue(),sha1($passInput->getValue()));
-            if(stripos($msg,"Error") === FALSE):
+                if(isset($flagSecure) && $flagSecure):
+                    require_once("db_processes.php");
+                    $db = new Database("eb2a_26636227_task4");                
+                    $msg = $db->login($emailInput->getValue(),sha1($passInput->getValue()));
+                    if(stripos($msg,"Error") === FALSE):
+                        ?>
+                            <div class="alert alert-success">
+                        <?php
+                                $_SESSION['name'] = $msg;
+                                $_SESSION['TIMEOUT'] = time();
+                                echo "login Successfully ".$msg;
+                        ?>
+                            </div>
+                            <div class="alert alert-warning">
+                        <?php
+                            echo "You will be redirect to <a href='index.php'>Home</a> page after 3 seconds automatically";
+                        ?>
+                        </div>
+                            <script>
+                            setTimeout(function(){
+                                window.location.href = "index.php";
+                            },3000);
+                        </script>
+                        <?php
+                        else:
+                        ?>
+                            <div class="alert alert-danger">
+                        <?php
+                                echo $msg;
+                        ?>
+                            </div>
+                        <?php
+                    endif;
+                endif;
                 ?>
-                    <div class="alert alert-success">
-                <?php
-                        $_SESSION['name'] = $msg;
-                        echo "login Successfully ".$msg;
-                ?>
-                    </div>
-                    <div class="alert alert-warning">
-                <?php
-                    echo "You will be redirect to <a href='index.php'>Home</a> page after 3 seconds automatically";
-                ?>
-                </div>
-                    <script>
-                    setTimeout(function(){
-                        window.location.href = "http://localhost:8080/tasks/task4/index.php";
-                    },3000);
-                </script>
-                <?php
-                else:
-                ?>
-                    <div class="alert alert-danger">
-                <?php
-                        echo $msg;
-                ?>
-                    </div>
-                <?php
-            endif;
-        endif;
-        ?>
 
 
-</div>
+        </div>
 
 
 

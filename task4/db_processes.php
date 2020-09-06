@@ -2,18 +2,18 @@
     error_reporting(0);
     class Database
     {
-        private const HOST = "localhost";
-        private const NAME = "root";
-        private const PASSWORD = "rootroot";
+        private const HOST = "sql209.eb2a.com";
+        private const NAME = "eb2a_26636227";
+        private const PASSWORD = "asemasem99";
         private $connection;
         private $dbname;
 
         public function __construct($dbname)
         {
             $this->dbname = $dbname;
-            $this->connection = new mysqli(self::HOST,self::NAME,self::PASSWORD,$dbname);
-            if($this->connection->connect_error):
-                die("Error when connect to database");
+            $this->connection = new mysqli(self::HOST,self::NAME,self::PASSWORD,$this->dbname);
+            if($this->connection->connect_error) :
+                echo("Error when connect to database");
             endif;
         }
 
@@ -25,19 +25,23 @@
             if($getUserData != NULL && $getUserData['email'] == $data["email"]):
                 return "Member already registerd";
             else:
-                $command = $this->connection->prepare("INSERT INTO users(name,email,pass,phone,addr)VALUES (?,?,?,?,?);");
-                $command->bind_param("sssss"
-                                    ,$this->connection->real_escape_string($data['name'])
-                                    ,$this->connection->real_escape_string($data['email'])
-                                    ,$this->connection->real_escape_string($data['pass'])
-                                    ,$this->connection->real_escape_string($data['phone'])
-                                    ,$this->connection->real_escape_string($data['addr'])
-                                    );
-                $result = $command->execute();
-                if(!$result):
-                    return "Can't signup, Error when connecting to server";
+                $command = $this->connection->prepare("INSERT INTO users(name,email,pass,phone,addr)VALUES (?,?,?,?,?)");
+                if($command !== FALSE):
+                    $command->bind_param("sssss"
+                                        ,$this->connection->real_escape_string($data['name'])
+                                        ,$this->connection->real_escape_string($data['email'])
+                                        ,$this->connection->real_escape_string($data['pass'])
+                                        ,$this->connection->real_escape_string($data['phone'])
+                                        ,$this->connection->real_escape_string($data['addr'])
+                                        );
+                    $result = $command->execute();
+                    if($result === FALSE):
+                        return "Can't signup, Error when connecting to server";
+                    else:
+                        return "Done, Thank you";
+                    endif;
                 else:
-                    return "Done, Thank you";
+                    return "Can't signup, Error when connecting to server";
                 endif;
             endif;
         }

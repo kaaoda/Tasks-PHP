@@ -36,7 +36,7 @@ session_start();
                             </div>
                             <script>
                                 setTimeout(function(){
-                                    window.location.href = "http://localhost:8080/tasks/task4/login.php";
+                                    window.location.href = "login.php";
                                 },3000);
                             </script>
                             <?php
@@ -44,7 +44,7 @@ session_start();
                             echo "You are not signed in, please <a href='signup.php'>Signup</a> or <a href='login.php'>Login</a>";
                         endif;
                     else:
-                        header("location:http://localhost:8080/tasks/task4/index.php");
+                        header("location:index.php");
                     endif;
                     ?>
         </div>
