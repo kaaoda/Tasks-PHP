@@ -14,8 +14,8 @@ Upload button upload csv file and create database and table needed.
 * create database called task4.
 * import table.sql file to create Table 'users'.
 * in "db_processes.php" change the following:
-	1 .private const HOST
-	2 .private const NAME
-	3 .private const PASSWORD
+	* .private const HOST
+	* .private const NAME
+	* .private const PASSWORD
 	> to proper values for your localhost.
 
