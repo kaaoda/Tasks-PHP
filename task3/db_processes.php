@@ -5,7 +5,7 @@
     {
         //utility object
         private $util = NULL;
-        private const HOST = "sql209.eb2a.com";
+        private const HOST = "localhost";
         private $username;
         private $password;
         private $connection;
@@ -24,22 +24,22 @@
 
         public function selectDB($name)
         {
-            $this->dbname = "eb2a_26636227_".$name;
+            $this->dbname = $name;
             $this->connection->select_db($this->dbname);
         }
 
         public function createDB($name)
         {
-            //$command = "CREATE DATABASE IF NOT EXISTS ".$name.";";
-            //$result = $this->connection->query($command);
-            //if($result):
+            $command = "CREATE DATABASE IF NOT EXISTS ".$name.";";
+            $result = $this->connection->query($command);
+            if($result):
                 $this->selectDB($name);
                 $this->createTable();
-            //else:
+            else:
                 if($this->connection->error):
                     $this->util->produceErrorMsg("Error in server");
                 endif;
-            //endif;
+            endif;
         }
 
         private function createTable()
